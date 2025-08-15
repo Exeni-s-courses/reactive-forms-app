@@ -1,7 +1,7 @@
 <h2>Reactivos: <small> Dinámicos </small></h2>
 <hr />
 
-<form autocomplete="off" [formGroup]="myForm">
+<form autocomplete="off" [formGroup]="myForm" (ngSubmit)="onSubmit()">
   <!-- Nombre -->
   <div class="mb-3 row">
     <label class="col-sm-3 col-form-label">Nombre</label>
@@ -25,9 +25,18 @@
     <label class="col-sm-3 col-form-label">Agregar</label>
     <div class="col-sm-9">
       <div class="input-group">
-        <input class="form-control" placeholder="Agregar favorito" />
+        <input
+          [formControl]="newFavorite"
+          (keydown.enter)="onAddToFavorites()"
+          class="form-control"
+          placeholder="Agregar favorito"
+        />
 
-        <button class="btn btn-outline-primary" type="button">
+        <button
+          (click)="onAddToFavorites()"
+          class="btn btn-outline-primary"
+          type="button"
+        >
           Agregar favorito
         </button>
       </div>
@@ -44,13 +53,28 @@
         <div class="input-group">
           <input class="form-control" [formControlName]="i" />
 
-          <button class="btn btn-outline-danger" type="button">Eliminar</button>
+          <button
+            (click)="onDeleteFavorite(i)"
+            class="btn btn-outline-danger"
+            type="button"
+          >
+            Eliminar
+          </button>
         </div>
 
         @if (formUtils.isValidFieldInArray(favoriteGames, i)) {
-        <span class="form-text text-danger"> {{ formUtils.getFieldErrorInArray(favoriteGames, i) }}</span>
+        <span class="form-text text-danger">
+          {{ formUtils.getFieldErrorInArray(favoriteGames, i) }}</span
+        >
         }
       </div>
+      }
+
+      <!-- -->
+      @if (formUtils.isValidField(myForm, 'favoriteGames')) {
+      <span class="form-text text-danger">
+        Debe de tener al menos 2 juegos.</span
+      >
       }
     </div>
   </div>
@@ -73,6 +97,6 @@
 <pre>{{ myForm.valid | json }}</pre>
 <br />
 
-<!-- <span>Agregar Juego</span> -->
-<!-- <pre>{{ myForm | json }}</pre>
-<pre>{{ myForm | json }}</pre> -->
+<span>Agregar Juego</span>
+<pre>{{ myForm.controls["favoriteGames"].errors | json }}</pre>
+<pre>{{ myForm.controls["favoriteGames"].value | json }}</pre>

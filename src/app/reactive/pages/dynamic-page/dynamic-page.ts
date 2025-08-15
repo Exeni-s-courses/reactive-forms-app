@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -30,7 +31,27 @@ export class DynamicPage {
     ),
   });
 
+  newFavorite = new FormControl('', Validators.required);
+  // newFavorite = this.fb.control('', Validators.required);
+
   get favoriteGames() {
     return this.myForm.get('favoriteGames') as FormArray;
+  }
+
+  onAddToFavorites() {
+    if (this.newFavorite.invalid) return;
+
+    const newGame = this.newFavorite.value;
+
+    this.favoriteGames.push(this.fb.control(newGame, Validators.required));
+    this.newFavorite.reset();
+  }
+
+  onDeleteFavorite(index: number) {
+    this.favoriteGames.removeAt(index);
+  }
+
+  onSubmit(){
+    this.myForm.markAllAsTouched();
   }
 }
