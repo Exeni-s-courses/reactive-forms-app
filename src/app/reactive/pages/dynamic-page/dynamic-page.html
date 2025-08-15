@@ -28,6 +28,7 @@
         <input
           [formControl]="newFavorite"
           (keydown.enter)="onAddToFavorites()"
+          (keydown.enter)="$event.preventDefault()"
           class="form-control"
           placeholder="Agregar favorito"
         />
