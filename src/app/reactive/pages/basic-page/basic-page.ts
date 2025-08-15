@@ -30,7 +30,10 @@ export class BasicPage {
   // });
 
   isValidField(fieldName: string): boolean | null {
-    return !!this.myForm.controls[fieldName].errors;
+    return (
+      this.myForm.controls[fieldName].errors &&
+      this.myForm.controls[fieldName].touched
+    );
   }
 
   getFieldError(fieldName: string): string | null {
@@ -47,5 +50,16 @@ export class BasicPage {
       }
     }
     return null;
+  }
+
+  onSave() {
+    if (this.myForm.invalid) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+
+    console.log(this.myForm.value);
+
+    this.myForm.reset();
   }
 }
