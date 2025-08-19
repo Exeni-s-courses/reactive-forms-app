@@ -37,8 +37,8 @@
 
           @if (formUtils.isValidField(myForm, 'email')) {
           <span class="form-text text-danger">
-             <!-- El valor ingresado no parece un correo electrónico-->
-            {{ formUtils.getFieldError(myForm, "email") }} 
+            <!-- El valor ingresado no parece un correo electrónico-->
+            {{ formUtils.getFieldError(myForm, "email") }}
           </span>
           }
         </div>
@@ -102,6 +102,9 @@
 
       <div class="row">
         <div class="col">
+          @if(myForm.errors && myForm.touched){
+          <span class="text-danger">Las contraseñas no son iguales</span>
+          }
           <button class="btn btn-primary float-end" type="submit">Crear</button>
         </div>
       </div>
