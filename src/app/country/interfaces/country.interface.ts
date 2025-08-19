@@ -1,5 +1,5 @@
 export interface Country {
-  name: NamedCurve;
+  name: Name;
   cca3: string;
   borders: string[];
 }
