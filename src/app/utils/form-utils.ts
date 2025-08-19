@@ -1,4 +1,17 @@
-import { AbstractControl, FormArray, FormGroup, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormGroup,
+  ValidationErrors,
+} from '@angular/forms';
+
+async function sleep() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2500);
+  });
+}
 
 export class FormUtils {
   static namePattern = '([a-zA-Z]+) ([a-zA-Z]+)';
@@ -16,6 +29,8 @@ export class FormUtils {
           return `Valor mínimo de ${errors['min']['min']}`;
         case 'email':
           return `El valor ingresado no es un correo electronico`;
+        case 'emailTaken':
+          return `El correo electronico ya está siendo usado por otro usuario`;
         case 'pattern':
           if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
             return 'El valor ingresado no luce como un correo electronico';
@@ -40,7 +55,6 @@ export class FormUtils {
     );
   }
 
-  
   static isFieldOneEqualFieldTwo(field1: string, field2: string) {
     return (formGroup: AbstractControl) => {
       const field1Value = formGroup.get(field1)?.value;
@@ -52,7 +66,6 @@ export class FormUtils {
           };
     };
   }
-
 
   static getFieldError(form: FormGroup, fieldName: string): string | null {
     if (!form.controls[fieldName]) return null;
@@ -67,5 +80,18 @@ export class FormUtils {
     if (formArray.controls.length === 0) return null;
     const errors = formArray.controls[index]['errors'] ?? {};
     return FormUtils.getTextError(errors);
+  }
+
+  static async checkingServerResponse(
+    control: AbstractControl
+  ): Promise<ValidationErrors | null> {
+    await sleep();
+    const formValue = control.value;
+    if (formValue === 'hola@mundo.com') {
+      return {
+        emailTaken: true,
+      };
+    }
+    return null;
   }
 }
