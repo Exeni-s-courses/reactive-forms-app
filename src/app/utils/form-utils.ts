@@ -27,6 +27,8 @@ export class FormUtils {
           return `Mínimo de ${errors['minlength']['requiredLength']} caracteres`;
         case 'min':
           return `Valor mínimo de ${errors['min']['min']}`;
+        case 'noStrider':
+          return `Nombre prohibido`;
         case 'email':
           return `El valor ingresado no es un correo electronico`;
         case 'emailTaken':
@@ -90,6 +92,16 @@ export class FormUtils {
     if (formValue === 'hola@mundo.com') {
       return {
         emailTaken: true,
+      };
+    }
+    return null;
+  }
+
+  static notStrider(control: AbstractControl): ValidationErrors | null {
+    const formValue = control.value.toLowerCase();
+    if (formValue.includes('strider')) {
+      return {
+        noStrider: true,
       };
     }
     return null;
